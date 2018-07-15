@@ -10,8 +10,17 @@
         var arr = [1,5,4,2,3];
         // _.bubbleSort(arr);
         // _.selectionSort(arr);
-        _.insertionSort(arr);
-        console.log(arr)
+        //_.insertionSort(arr);
+        //_.quickSort(arr);
+        var myobj = {"name":"shauna","age":18,"arr1":[1,2,3,4,5],"string":'got7',"arr2":[1,2,3,4,5],"arr3":[{"name1":"shauna"},{"job":"web"}],
+           "fn" : function(){
+             console.log('1');
+           }         
+        };
+        obj = {};
+        obj = _.deepCopy(obj,myobj);
+        obj.name = 'mike';
+        console.log(obj);
     </script>
 
   </body>
