@@ -213,6 +213,26 @@
         }
     }
 
+    // 斐波那契数列取i项 1 1 2 3 5 8 13 ...
+    _.fibonacci = function(index) { 
+        var memo = [];  // 利用缓存 空间换时间
+        if(typeof index !== 'number' || index <= 0 || parseInt(index, 10) !== index) return 'error';
+        return (function fib(x) {
+            if(memo[x]) {
+                return memo[x];
+            } else if(x <= 2) {
+                memo[x] = 1;
+                return 1;
+            } else {
+                memo[x-1] = fib(x-1);
+                memo[x-2] = fib(x-2);
+                memo[x] = memo[x-1] + memo[x-2];
+                return memo[x];
+            }
+        }(index));
+        
+    }
+
 
     return _;
 })
