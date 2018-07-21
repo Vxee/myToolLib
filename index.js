@@ -154,12 +154,14 @@
             obj2 = JSON.parse(JSON.stringify(obj1));
             return obj2;
         }else{
-            obj2 = obj2 || {};
-            for(var key in obj){
-                if(typeof obj[key] === 'object'){
-                    obj2[key] = (obj[key].constructor === 'array') ? [] : {};
-                    this.deepCopy(obj2[key],obj1[key]);
-                }else{
+            if(!obj2) {
+                obj2 = obj1 instanceof Array ? [] : {};
+            }
+            for (var key in obj1) {
+                if (typeof obj1[key] === 'object') {
+                    obj2[key] = obj1[key] instanceof Array ? [] : {};
+                    _.deepCopy(obj1[key], obj2[key]);
+                } else {
                     obj2[key] = obj1[key];
                 }
             }
