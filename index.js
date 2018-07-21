@@ -233,6 +233,44 @@
         
     }
 
+    _.bind = function(obj,arg){
+        var context = this;
+        var arg = ArrayProto.slice.call(arguments,1);
+        F = function(){};
+        fBound = function(){
+            arg = arg.concat(ArrayProto.slice.call(arguments,1));
+            return context.apply(obj instanceof F ? this : context, arg);
+        }
+        F.prototype  = context.prototype;
+        fBound.prototype = new F();
+        return fBound;
+    }
+
+    // 观察者模式
+    /**
+     *  var events=new _.Events();
+        events.on('say',function(name){
+            console.log('Hello',nama)
+        });
+        events.emit('say','Jony yu');
+     */
+    _.Events = function(){
+        this.on = function(eventName, callback){
+            this.handler = this.handler || {};
+            this.handler[eventName] = this.handler[eventName] || [];
+            this.handler[eventName].push(callback);
+        }
+        this.emit = function(eventName, obj){
+            if(this.handler[eventName]){
+                for(var i = 0; i < this.handler.length; i++){
+                    this.handler[eventName][i](obj);
+                }
+            }
+        }
+    }
+
+
+
 
     return _;
 })
