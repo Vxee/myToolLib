@@ -235,12 +235,12 @@
         
     }
 
-    _.bind = function(obj,arg){
+    fakeBind = function(obj,arg){
         var context = this;
         var arg = ArrayProto.slice.call(arguments,1);
         F = function(){};
         fBound = function(){
-            arg = arg.concat(ArrayProto.slice.call(arguments,1));
+            arg = arg.concat(ArrayProto.slice.call(arguments));
             return context.apply(obj instanceof F ? this : context, arg);
         }
         F.prototype  = context.prototype;
@@ -271,8 +271,36 @@
         }
     }
 
+    // 模拟实现new方法
+    _.ObjectFactory = function(){
+        var obj = new Object();
+        Constructor = [].shift.apply(arguments);
+        Object.setPrototypeOf(obj, Constructor.prototype);
+        result = Constructor.apply(obj, arguments);
+        return result !== null && typeof result === 'object' ? result : obj;
+    }
 
+    // 模拟实现call方法
+    fakeCall = function(context, ...args){
+        context = context || window;
+        context.fn = this;
+        result = context.fn(...args);
+        delete context.fn;
+        return result;
+    }
 
+    // 模拟实现apply方法
+    fakeApply = function(context, ...args){
+        context = context || window;
+        context.fn = this;
+        if(!args){
+            result = context.fn();
+        } else {
+            result = context.fn(...args);
+        }
+        delete context.fn;
+        return result;
+    }
 
     return _;
 })
