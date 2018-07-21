@@ -14,6 +14,15 @@
 
     var ArrayProto = Array.prototype, FunctionProto = Function.prototype, ObjProto = Object.prototype;
 
+    isType = function(type){
+        return function(obj){
+            return Object.prototype.toString.call(obj) === '[object ' + type + ']';
+        }
+    }
+    _.isArray = isType('String');
+    _.isObject = isType('Array');
+    _.isString = isType('String');
+
     var _ = {};
 
     _.swapArray = function(arr,i,j){
@@ -113,6 +122,31 @@
                 fn.apply(th,args);
             }
         }
+    }
+
+    _.throttle2 = function(fn, interval){
+        var __self = fn,
+            timer,              // 定时器
+            firstTime = true;   // 是否是第一次调用
+        
+        return function(){
+            var args = arguments,
+                __me = this;
+            
+            if(firstTime){
+                fn.apply(__me, args);
+                return firstTime = false;
+            }
+            if(timer){
+                return false;
+            }
+
+            timer = setTimeout(function(){
+                clearTimeout(timer);
+                timer = null;
+                __self.apply(__me, args);
+            }, interval || 500);
+        } 
     }
 
     // 函数防抖
@@ -300,6 +334,27 @@
         }
         delete context.fn;
         return result;
+    }
+
+    // 分时函数 解决进行某些操作时数据量过大影响性能的问题 通过采用分批处理
+    // arr: 数据  fn: 业务逻辑  count: 每次执行的数量
+    _.timeChunk = function(arr, fn, count){
+        var t;
+
+        var start = function(){
+            for(var i = 0; i < Math.min(count || 1, arr.length); i++){
+                var obj = arr.shift();
+                fn(obj);
+            }
+        }
+        return function(){
+            t = setInterval(function(){
+                if(arr.length === 0){
+                    return clearInterval(t);
+                }
+                start();
+            }, 200);
+        }
     }
 
     return _;
