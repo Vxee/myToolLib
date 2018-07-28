@@ -12,7 +12,10 @@
 })(this, function(){
     var root = this;
 
-    var ArrayProto = Array.prototype, FunctionProto = Function.prototype, ObjProto = Object.prototype;
+    var ArrayProto = Array.prototype, 
+        FunctionProto = Function.prototype, 
+        ObjProto = Object.prototype,
+        StringProto = String.prototype;
 
     isType = function(type){
         return function(obj){
@@ -355,6 +358,47 @@
                 start();
             }, 200);
         }
+    }
+
+    // 模拟push方法
+    ArrayProto.push2 = function(){
+        ArrayProto.splice(this,[this.length, 0].concat(ArrayProto.slice(argument)));
+        return this.length;
+    }
+
+    // 模拟pop方法
+    ArrayProto.pop2 = function(){
+        return ArrayProto.splice(this, [this.length - 1, 1])[0];
+    }
+
+    // 字符串repeat实现
+    StringProto.repeatString = function(n){
+        return this.repeat(n);  // 原生方法
+    }
+
+    StringProto.repeatString2 = function(n){
+        return Array(n+1).join(this);
+    }
+
+    StringProto.repeatString3 = function(n){
+        return Array(n).fill(this).join("");
+    }
+
+    // 数组展平
+    _.flatten = function(arr){
+        return [].concat(...arr.map(x => Array.isArray(x) ? _.flatten(x) : x));
+    }
+
+    // 数组去重
+    _.arrayDeduplicate = function(arr){
+        //return [...new Set(arr)];
+        return Array.from(new Set(arr));
+    }
+
+    _.arrayDeduplicate2 = function(arr){
+        arr.filter(function(ele, index, array){
+            return array.indexOf(ele) === index;
+        })
     }
 
     return _;
