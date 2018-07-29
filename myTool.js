@@ -70,7 +70,7 @@
         for(var i = 1; i < len; i++){
             var preIndex = i-1,
                 current = arr[i];
-            while(preIndex > 0 && current < arr[preIndex]){
+            while(preIndex >= 0 && current < arr[preIndex]){
                 arr[preIndex+1] = arr[preIndex];
                 preIndex--;
             }
