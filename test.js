@@ -1,4 +1,3 @@
-import from './index.js';
+import _ from './myTool'
 
-
-_.sayHello();
+console.log(_.isArray([1,2]));

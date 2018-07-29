@@ -1,8 +1,8 @@
 ;(function(root, factory){
     'use strict';
     if(typeof exports === 'object' && typeof module !== 'undefined' && module.exports){
-        module.exports._ = factory(); // CommonJS
-        exports._ = factory();
+        module.exports = factory(); // CommonJS
+        exports = factory();
     } 
     else if(typeof define === 'function' && define.amd)
         define(factory) // AMD
@@ -22,11 +22,11 @@
             return Object.prototype.toString.call(obj) === '[object ' + type + ']';
         }
     }
-    _.isArray = isType('String');
-    _.isObject = isType('Array');
-    _.isString = isType('String');
-
     var _ = {};
+
+    _.isArray = isType('Array');
+    _.isObject = isType('Object');
+    _.isString = isType('String');
 
     _.swapArray = function(arr,i,j){
         var temp = arr[i];
@@ -36,7 +36,7 @@
 
     // 冒泡排序
     _.bubbleSort = function(arr){
-        if(!Array.isArray(arr)) return;
+        if(!_.isArray(arr)) return;
         var len = arr.length;
         for(var i = 0; i < len - 1; i++){
             for(var j = 0; j < len - i - 1; j++){
@@ -50,7 +50,7 @@
 
     // 选择排序
     _.selectionSort = function(arr){
-        if(!Array.isArray(arr)) return;
+        if(!_.isArray(arr)) return;
         var len = arr.length;
         for(var i = 0; i < len; i++){
             var minIndex = i;
@@ -65,7 +65,7 @@
     
     // 插入排序
     _.insertionSort = function(arr){
-        if(!Array.isArray(arr)) return;
+        if(!_.isArray(arr)) return;
         var len = arr.length;
         for(var i = 1; i < len; i++){
             var preIndex = i-1,
