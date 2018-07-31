@@ -362,7 +362,7 @@
 
     // 模拟push方法
     ArrayProto.push2 = function(){
-        ArrayProto.splice(this,[this.length, 0].concat(ArrayProto.slice(argument)));
+        ArrayProto.splice(this,[this.length, 0].concat(ArrayProto.slice(arguments)));
         return this.length;
     }
 
