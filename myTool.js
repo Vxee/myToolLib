@@ -272,15 +272,15 @@
         
     }
 
-    fakeBind = function(obj,arg){
-        var context = this;
-        var arg = ArrayProto.slice.call(arguments,1);
-        F = function(){};
-        fBound = function(){
-            arg = arg.concat(ArrayProto.slice.call(arguments));
-            return context.apply(obj instanceof F ? this : context, arg);
-        }
-        F.prototype  = context.prototype;
+    fakeBind = function(context){
+        var self = this,
+             _args = ArrayProto.slice.call(arguments,1),
+            F = function(){},
+            fBound = function(){
+                var _inargs = ArrayProto.slice.call(arguments);
+                return self.apply(this instanceof fBound ? this : context, _args.concat(_inargs));
+            };
+        F.prototype  = self.prototype;
         fBound.prototype = new F();
         return fBound;
     }
